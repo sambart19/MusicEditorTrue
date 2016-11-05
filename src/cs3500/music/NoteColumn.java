@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Designed to represent a note with octave included.
  */
-
+// SAM HALAP
 //hello world
 public class NoteColumn implements Comparable<NoteColumn> {
 
