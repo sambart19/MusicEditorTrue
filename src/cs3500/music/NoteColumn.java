@@ -1,5 +1,3 @@
-//Hello again
-
 package cs3500.music;
 
 import java.util.ArrayList;
@@ -8,8 +6,6 @@ import java.util.List;
 /**
  * Designed to represent a note with octave included.
  */
-// SAM HALAP
-//hello world
 public class NoteColumn implements Comparable<NoteColumn> {
 
   private final NoteName name;
