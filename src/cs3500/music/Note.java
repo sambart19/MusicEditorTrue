@@ -3,6 +3,55 @@ package cs3500.music;
 /**
  * Class to represent a note.
  */
+
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
+/**
+ * Class to represent a note.
+ */
 public class Note {
 
   private boolean head;
