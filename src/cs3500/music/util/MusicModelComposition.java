@@ -29,7 +29,7 @@ public class MusicModelComposition implements CompositionBuilder<IMusicModel> {
                                                 int pitch, int volume) {
     int octave = (pitch / 12) - 1;
     NoteName name = NoteName.values()[pitch % 12];
-    this.model.addBeat(name, octave, start, (end - start) + 1, volume, instrument);
+    this.model.addBeat(name, octave, start, (end - start), volume, instrument);
     return this;
   }
 
