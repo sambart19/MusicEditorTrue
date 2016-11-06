@@ -23,12 +23,13 @@ public class GuiViewFrameTest {
     try {
       Readable file = new FileReader(f);
       MusicModel m = (MusicModel)MusicReader.parseFile(file, comp);
+      GuiViewFrame b = new GuiViewFrame(m.print());
+      b.view();
       MidiViewImpl midi = new MidiViewImpl(m.print(), m.getTempo());
-      //GuiViewFrame b = new GuiViewFrame(m.print());
+      midi.view();
       //TextView t = new TextView(m.print());
       //t.view();
-      //b.view();
-      midi.view();
+
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }

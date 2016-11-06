@@ -113,8 +113,12 @@ public class MidiViewImpl implements IView {
         }
       }
     }
+    long end = this.synth.getMicrosecondPosition();
+    end = end - start;
+    System.out.println(end);
+    end = end / 1000;
     try {
-      sleep((max * this.tempo) / 1000);
+      sleep(Math.max((((max * this.tempo) / 1000) - end), 1));
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
