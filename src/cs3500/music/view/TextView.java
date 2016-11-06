@@ -1,5 +1,6 @@
 package cs3500.music.view;
 
+import java.util.Collections;
 import java.util.List;
 
 import cs3500.music.NoteColumn;
@@ -28,9 +29,7 @@ public class TextView implements IView {
 
     int lines = 0;
     for (NoteColumn n : this.notes) {
-      if (n.getBeats().size() > lines) {
-        lines = n.getBeats().size();
-      }
+      lines = Math.max(lines, Collections.max(n.getBeats().keySet()));
     }
     int length = Integer.toString(lines).length();
     String pad = "%" + Integer.toString(length) + "d";

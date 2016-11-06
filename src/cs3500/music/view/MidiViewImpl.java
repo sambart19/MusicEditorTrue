@@ -1,5 +1,6 @@
 package cs3500.music.view;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -80,36 +81,33 @@ public class MidiViewImpl implements IView {
     long start = this.synth.getMicrosecondPosition();
     start += 5000000;
     for (NoteColumn n : this.notes) {
-      for (int i = 0; i < n.getBeats().size(); i++) {
-
-        if (n.getBeats().get(i) != null) {
-          Note note = n.getBeats().get(i);
-          if (note.getHead()) {
-            try {
-              this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument(),
-                      this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
-                      start + (i * this.tempo));
-            } catch (InvalidMidiDataException e) {
-              e.printStackTrace();
-            }
+      for (Integer i : n.getBeats().keySet()) {
+        Note note = n.getBeats().get(i);
+        if (note.getHead()) {
+          try {
+            this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument(),
+                    this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
+                    start + (i * this.tempo));
+          } catch (InvalidMidiDataException e) {
+            e.printStackTrace();
           }
-          if (i < n.getBeats().size() - 1 && n.getBeats().get(i + 1) == null) {
-            note = n.getBeats().get(i);
-            try {
-              this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument(),
-                              this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
-                      start + ((i + 1) * this.tempo));
-            } catch (InvalidMidiDataException e) {
-              e.printStackTrace();
-            }
+        }
+        if (!n.getBeats().containsKey(i + 1)) {
+          note = n.getBeats().get(i);
+          try {
+            this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument(),
+                            this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
+                    start + ((i + 1) * this.tempo));
+          } catch (InvalidMidiDataException e) {
+            e.printStackTrace();
           }
         }
       }
     }
     int max = 0;
     for (NoteColumn n : this.notes) {
-      max = Math.max(max, n.getBeats().size());
-    }
+      max = Math.max(max, Collections.max(n.getBeats().keySet()));
+  }
     try {
       sleep((max * this.tempo) / 1000);
     } catch (InterruptedException e) {
