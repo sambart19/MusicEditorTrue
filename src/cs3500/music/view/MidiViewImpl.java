@@ -105,6 +105,7 @@ public class MidiViewImpl implements IView {
       }
     }
     int max = 0;
+
     for (NoteColumn n : this.notes) {
       max = Math.max(max, Collections.max(n.getBeats().keySet()));
   }

@@ -64,6 +64,7 @@ public class TextView implements IView {
     return result;
   }
 
+
   @Override
   public void view() {
     System.out.println(this.toString());
