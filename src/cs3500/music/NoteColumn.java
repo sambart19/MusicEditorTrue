@@ -81,6 +81,7 @@ public class NoteColumn implements Comparable<NoteColumn> {
     }
 
     this.beats.put(start, new Note(true, volume, instrument));
+    this.beats.get(start).setEnd(start + duration);
     int count = 1;
 
     while (duration > 1) {
