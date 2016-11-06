@@ -9,5 +9,5 @@ public interface IView {
   /**
    * The method that draws this view.
    */
-  void view() throws InvalidMidiDataException;
+  void view();
 }

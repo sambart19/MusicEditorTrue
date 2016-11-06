@@ -77,15 +77,15 @@ public class MidiViewImpl implements IView {
     return (octave * 12) + name.ordinal();
   }
 
-  public void view() throws InvalidMidiDataException{
+  public void view() {
     long start = this.synth.getMicrosecondPosition();
-    start += 5000000;
+    start += 1000000;
     for (NoteColumn n : this.notes) {
       for (Integer i : n.getBeats().keySet()) {
         Note note = n.getBeats().get(i);
         if (note.getHead()) {
           try {
-            this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument(),
+            this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument() - 1,
                     this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
                     start + (i * this.tempo));
           } catch (InvalidMidiDataException e) {
@@ -95,7 +95,7 @@ public class MidiViewImpl implements IView {
         if (!n.getBeats().containsKey(i + 1)) {
           note = n.getBeats().get(i);
           try {
-            this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument(),
+            this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument() - 1,
                             this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
                     start + ((i + 1) * this.tempo));
           } catch (InvalidMidiDataException e) {

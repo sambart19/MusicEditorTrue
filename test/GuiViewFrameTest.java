@@ -36,18 +36,14 @@ public class GuiViewFrameTest {
       e.printStackTrace();
     }*/
 
-    File luck = new File("mystery-3.txt");
+    File luck = new File("zoot-lw.txt");
     try {
       Readable file = new FileReader(luck);
       MusicModel m = (MusicModel)MusicReader.parseFile(file, comp);
       MidiViewImpl midi = new MidiViewImpl(m.print(), m.getTempo());
       GuiViewFrame b = new GuiViewFrame(m.print());
       b.view();
-      try {
-        midi.view();
-      } catch (InvalidMidiDataException e) {
-        e.printStackTrace();
-      }
+      midi.view();
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
