@@ -107,7 +107,9 @@ public class MidiViewImpl implements IView {
     int max = 0;
 
     for (NoteColumn n : this.notes) {
-      max = Math.max(max, Collections.max(n.getBeats().keySet()));
+      if (!n.getBeats().keySet().isEmpty()) {
+        max = Math.max(max, Collections.max(n.getBeats().keySet()));
+      }
   }
     try {
       sleep((max * this.tempo) / 1000);

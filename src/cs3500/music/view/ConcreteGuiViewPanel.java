@@ -92,7 +92,9 @@ public class ConcreteGuiViewPanel extends JPanel {
   private int maxBeat() {
     int result = 0;
     for (NoteColumn a  : notes) {
-      result = Math.max(Collections.max(a.getBeats().keySet()), result);
+      if (!a.getBeats().keySet().isEmpty()) {
+        result = Math.max(Collections.max(a.getBeats().keySet()), result);
+      }
     }
     return  result;
   }
