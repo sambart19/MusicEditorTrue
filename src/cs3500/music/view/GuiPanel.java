@@ -1,12 +1,15 @@
 package cs3500.music.view;
 
-import java.awt.*;
 
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.Collections;
 
 import java.util.List;
 
-import javax.swing.*;
+
+import javax.swing.JPanel;
 
 import cs3500.music.NoteColumn;
 
@@ -20,15 +23,17 @@ class GuiPanel extends JPanel {
   /**
    * Constructor reverses the order of the note columns to make it easier to draw the higher pitch
    * columns on top.
+   *
    * @param notes The intermediate representation of the music model
    */
- GuiPanel(List<NoteColumn> notes) {
+  GuiPanel(List<NoteColumn> notes) {
     Collections.reverse(notes);
     this.notes = notes;
     this.gridScale = 20;
   }
+
   @Override
-  public void paintComponent(Graphics g){
+  public void paintComponent(Graphics g) {
     // Handle the default painting
     super.paintComponent(g);
     // Look for more documentation about the Graphics class,
@@ -42,17 +47,20 @@ class GuiPanel extends JPanel {
   /**
    * This method draws out all straight lines for the rows. The number of lines drawn should
    * correspond to the number of different note-names there are + 1.
+   *
    * @param g The graphics class used to draw.
    */
   private void drawGrid(Graphics g) {
     //Draws the row lines
     for (int i = 0; i <= notes.size(); i++) {
-      g.drawLine(50, i * gridScale + 10, (this.maxBeat() + 4) * gridScale  + 50, i * gridScale + 10);
+      g.drawLine(50, i * gridScale + 10, (this.maxBeat() + 4) * gridScale + 50,
+              i * gridScale + 10);
     }
 
     //Draws the col lines
     for (int i = 0; i <= maxBeat() / 4 + 1; i++) {
-      g.drawLine(50 + i * gridScale * 4, 10, 50 + i * gridScale * 4, this.notes.size() * gridScale + 10);
+      g.drawLine(50 + i * gridScale * 4, 10, 50 + i * gridScale * 4,
+              this.notes.size() * gridScale + 10);
     }
   }
 
@@ -60,6 +68,7 @@ class GuiPanel extends JPanel {
    * Draws rectangles that represent notes at proper position. The rectangle is green if its a head
    * and it is orange if its not. Each rectangle is gridscale wide by gridscale length. Also draws
    * the notenames at correct position
+   *
    * @param g The graphics object used to draw.
    */
   private void drawNotes(Graphics g) {
@@ -86,6 +95,7 @@ class GuiPanel extends JPanel {
   /**
    * Draws the top row which consists of the Character representation of every 16 beats and also
    * spaced correctly.
+   *
    * @param g The graphics object used to draw.
    */
   private void drawTopRow(Graphics g) {
@@ -101,6 +111,7 @@ class GuiPanel extends JPanel {
 
   /**
    * Changes the scale.
+   *
    * @param gridScale the scale
    */
   public void setGridScale(int gridScale) {
@@ -109,21 +120,23 @@ class GuiPanel extends JPanel {
 
   /**
    * Finds the maxBeat within all NoteColumns
+   *
    * @return the maxBeat within all NoteColumns.
    */
   private int maxBeat() {
     int result = 0;
-    for (NoteColumn a  : notes) {
+    for (NoteColumn a : notes) {
       if (!a.getBeats().keySet().isEmpty()) {
         result = Math.max(Collections.max(a.getBeats().keySet()), result);
       }
     }
-    return  result;
+    return result;
   }
 
   @Override
-  public Dimension getPreferredSize(){
-    int x, y;
+  public Dimension getPreferredSize() {
+    int x;
+    int y;
     y = (this.notes.size()) * 50;
     x = (this.maxBeat() + 8) * gridScale;
 

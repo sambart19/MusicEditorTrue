@@ -3,10 +3,11 @@ package cs3500.music.util;
 import cs3500.music.NoteName;
 import cs3500.music.model.IMusicModel;
 import cs3500.music.model.MusicModel;
-//
+
 /**
  * The implementation of Composition Builder for Music Model.
  */
+
 public class MusicModelComposition implements CompositionBuilder<IMusicModel> {
 
   private IMusicModel model;

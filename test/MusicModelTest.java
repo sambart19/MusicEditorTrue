@@ -1,16 +1,13 @@
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cs3500.music.NoteColumn;
-import cs3500.music.model.IMusicModel;
 import cs3500.music.model.MusicModel;
-import cs3500.music.Note;
 import cs3500.music.NoteName;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MusicModelTest {
 

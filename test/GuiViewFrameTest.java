@@ -15,20 +15,23 @@ import cs3500.music.view.TextView;
  */
 public class GuiViewFrameTest {
 
-
+  /**
+   * A main method.
+   * @param args The args.
+   */
   public static void main(String[] args) {
     CompositionBuilder comp = new MusicModelComposition();
 
-    File f = new File("df-ttfaf.txt");
+    File f = new File("mystery-2.txt");
     try {
       Readable file = new FileReader(f);
       MusicModel m = (MusicModel)MusicReader.parseFile(file, comp);
-      //GuiViewFrame b = new GuiViewFrame(m.print());
-      //b.view();
+      GuiViewFrame b = new GuiViewFrame(m.print());
+      b.view();
       MidiViewImpl midi = new MidiViewImpl(m.print(), m.getTempo());
       midi.view();
-      //TextView t = new TextView(m.print());
-      //t.view();
+      TextView t = new TextView(m.print());
+      t.view();
 
     } catch (FileNotFoundException e) {
       e.printStackTrace();

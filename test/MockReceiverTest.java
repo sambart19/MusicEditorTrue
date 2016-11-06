@@ -13,7 +13,7 @@ import cs3500.music.util.MusicReader;
 import cs3500.music.view.IView;
 import cs3500.music.view.MidiViewImpl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MockReceiverTest {
 
@@ -25,6 +25,7 @@ public class MockReceiverTest {
     m.view();
     assertEquals("", s.toString());
   }
+
   @Test
   public void Test2() {
     IMusicModel model = new MusicModel();

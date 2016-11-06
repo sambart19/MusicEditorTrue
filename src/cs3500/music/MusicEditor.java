@@ -10,11 +10,14 @@ import cs3500.music.view.ViewFactory;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import javax.sound.midi.InvalidMidiDataException;
-
 
 public class MusicEditor {
-  public static void main(String[] args) throws IOException, InvalidMidiDataException {
+  /**
+   * This is the main method.
+   * @param args The arguments, a string for file, and a string for view.
+   * @throws IOException if no file is found.
+   */
+  public static void main(String[] args) throws IOException {
     String s = args[0];
     File f = new File(s);
     Readable file = new FileReader(f);

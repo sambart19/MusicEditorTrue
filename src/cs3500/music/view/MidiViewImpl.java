@@ -4,7 +4,13 @@ import java.util.Collections;
 import java.util.List;
 
 
-import javax.sound.midi.*;
+import javax.sound.midi.Synthesizer;
+import javax.sound.midi.Receiver;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiMessage;
+import javax.sound.midi.ShortMessage;
 
 import cs3500.music.MockSynth;
 import cs3500.music.Note;
@@ -15,7 +21,7 @@ import static java.lang.Thread.sleep;
 
 
 /**
- * A skeleton for MIDI playback
+ * A skeleton for MIDI playback.
  */
 
 public class MidiViewImpl implements IView {
@@ -41,6 +47,12 @@ public class MidiViewImpl implements IView {
     }
   }
 
+  /**
+   * A mock constructor.
+   * @param notes The notes.
+   * @param tempo The tempo.
+   * @param s The stringbuilder.
+   */
   public MidiViewImpl(List<NoteColumn> notes, int tempo, StringBuilder s) {
     this.notes = notes;
     this.tempo = tempo;
@@ -55,33 +67,6 @@ public class MidiViewImpl implements IView {
 
   /**
    * Relevant classes and methods from the javax.sound.midi library:
-   * <ul>
-   *  <li>{@link MidiSystem#getSynthesizer()}</li>
-   *  <li>{@link Synthesizer}
-   *    <ul>
-   *      <li>{@link Synthesizer#open()}</li>
-   *      <li>{@link Synthesizer#getReceiver()}</li>
-   *      <li>{@link Synthesizer#getChannels()}</li>
-   *    </ul>
-   *  </li>
-   *  <li>{@link Receiver}
-   *    <ul>
-   *      <li>{@link Receiver#send(MidiMessage, long)}</li>
-   *      <li>{@link Receiver#close()}</li>
-   *    </ul>
-   *  </li>
-   *  <li>{@link MidiMessage}</li>
-   *  <li>{@link ShortMessage}</li>
-   *  <li>{@link MidiChannel}
-   *    <ul>
-   *      <li>{@link MidiChannel#getProgram()}</li>
-   *      <li>{@link MidiChannel#programChange(int)}</li>
-   *    </ul>
-   *  </li>
-   * </ul>
-   * @see <a href="https://en.wikipedia.org/wiki/General_MIDI">
-   *   https://en.wikipedia.org/wiki/General_MIDI
-   *   </a>
     */
 
   public void playNote() throws InvalidMidiDataException {
