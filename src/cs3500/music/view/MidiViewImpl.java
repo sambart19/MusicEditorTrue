@@ -39,6 +39,7 @@ public class MidiViewImpl implements IView {
       e.printStackTrace();
     }
   }
+
   /**
    * Relevant classes and methods from the javax.sound.midi library:
    * <ul>
@@ -115,7 +116,6 @@ public class MidiViewImpl implements IView {
     }
     long end = this.synth.getMicrosecondPosition();
     end = end - start;
-    System.out.println(end);
     end = end / 1000;
     try {
       sleep(Math.max((((max * this.tempo) / 1000) - end), 1));
