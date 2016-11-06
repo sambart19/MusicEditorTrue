@@ -39,4 +39,16 @@ public interface IMusicModel {
    * @return The list of notes in this model.
    */
   List<NoteColumn> print();
+
+  /**
+   * A setter for the tempo
+   * @param tempo The tempo for this model.
+   */
+  void setTempo(int tempo);
+
+  /**
+   * A getter for the tempo.
+   * @return The tempo of this model.
+   */
+  int getTempo();
 }

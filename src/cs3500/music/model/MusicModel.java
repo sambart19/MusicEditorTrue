@@ -13,7 +13,7 @@ import cs3500.music.NoteName;
 public class MusicModel implements IMusicModel {
 
   private List<NoteColumn> notes;
-  public int tempo;
+  private int tempo;
 
   /**
    * A basic constructor for MusicModel.
@@ -49,8 +49,14 @@ public class MusicModel implements IMusicModel {
     Collections.sort(this.notes);
   }
 
+  @Override
   public void setTempo(int tempo) {
     this.tempo = tempo;
+  }
+
+  @Override
+  public int getTempo() {
+    return this.tempo;
   }
 
   /**

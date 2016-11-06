@@ -18,9 +18,11 @@ public class MidiViewImpl implements IView {
   private final Synthesizer synth;
   private final Receiver receiver;
   private List<NoteColumn> notes;
+  private int tempo;
 
-  public MidiViewImpl(List<NoteColumn> notex) {
+  public MidiViewImpl(List<NoteColumn> notes, int tempo) {
     this.notes = notes;
+    this.tempo = tempo;
     try {
       this.synth = MidiSystem.getSynthesizer();
       this.receiver = synth.getReceiver();
@@ -80,10 +82,29 @@ public class MidiViewImpl implements IView {
         if (n.getBeats().get(i) != null) {
           Note note = n.getBeats().get(i);
           if (note.getHead()) {
-            this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument(), this.toPitch(n.getName(), n.getOctave()), note.getVolume()), start + (i * ));
+            try {
+              this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument(),
+                      this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
+                      start + (i * this.tempo));
+            } catch (InvalidMidiDataException e) { }
           }
+        } else if (i > 0 && n.getBeats().get(i - 1) != null) {
+          Note note = n.getBeats().get(i - 1);
+          try {
+            this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument(),
+                            this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
+                    start + (i * this.tempo));
+          } catch (InvalidMidiDataException e) { }
         }
       }
     }
+    int max = 0;
+    for (NoteColumn n : this.notes) {
+      max = Math.max(max, n.getBeats().size());
+    }
+    try {
+      wait(max * this.tempo);
+    } catch (InterruptedException e) { }
+    this.receiver.close();
   }
 }
