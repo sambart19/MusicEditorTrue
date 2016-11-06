@@ -76,8 +76,8 @@ public class NoteColumn implements Comparable<NoteColumn> {
       throw new IllegalArgumentException("start index out of range");
     }
 
-    if (duration < 1) {
-      throw new IllegalArgumentException("duration cannot be less than one");
+    if (duration < 0) {
+      throw new IllegalArgumentException("duration cannot be negative");
     }
 
     this.beats.put(start, new Note(true, volume, instrument));
@@ -103,7 +103,7 @@ public class NoteColumn implements Comparable<NoteColumn> {
       throw new IllegalArgumentException("start index out of range");
     }
 
-    if (!(this.beats.get(start).equals("  X  "))) {
+    if (!(this.beats.get(start).toString().equals("  X  "))) {
       throw new IllegalArgumentException("index not at the start of a note");
     }
 

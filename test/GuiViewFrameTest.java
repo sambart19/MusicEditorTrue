@@ -23,8 +23,8 @@ public class GuiViewFrameTest {
     try {
       Readable file = new FileReader(f);
       MusicModel m = (MusicModel)MusicReader.parseFile(file, comp);
-      GuiViewFrame b = new GuiViewFrame(m.print());
-      b.view();
+      //GuiViewFrame b = new GuiViewFrame(m.print());
+      //b.view();
       MidiViewImpl midi = new MidiViewImpl(m.print(), m.getTempo());
       midi.view();
       //TextView t = new TextView(m.print());

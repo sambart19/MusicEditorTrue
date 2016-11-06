@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.sound.midi.*;
 
+import cs3500.music.MockSynth;
 import cs3500.music.Note;
 import cs3500.music.NoteColumn;
 import cs3500.music.NoteName;
@@ -33,6 +34,18 @@ public class MidiViewImpl implements IView {
     this.tempo = tempo;
     try {
       this.synth = MidiSystem.getSynthesizer();
+      this.receiver = synth.getReceiver();
+      this.synth.open();
+    } catch (MidiUnavailableException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public MidiViewImpl(List<NoteColumn> notes, int tempo, StringBuilder s) {
+    this.notes = notes;
+    this.tempo = tempo;
+    try {
+      this.synth = new MockSynth(s);
       this.receiver = synth.getReceiver();
       this.synth.open();
     } catch (MidiUnavailableException e) {
