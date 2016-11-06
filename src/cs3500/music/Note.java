@@ -11,6 +11,7 @@ public class Note {
   private boolean head;
   private int volume;
   private int instrument;
+  private int end;
 
   /**
    * A basic constructor for note.
@@ -22,6 +23,23 @@ public class Note {
     this.head = head;
     this.volume = volume;
     this.instrument = instrument;
+    this.end = 0;
+  }
+
+  /**
+   * The getter for the end of this note.
+   * @return The end of this note.
+   */
+  public int getEnd() {
+    return this.end;
+  }
+
+  /**
+   * A setter for the end of this note.
+   * @param end The end of this note.
+   */
+  public void setEnd(int end) {
+    this.end = end;
   }
 
   /**

@@ -23,6 +23,11 @@ public class MidiViewImpl implements IView {
   private List<NoteColumn> notes;
   private int tempo;
 
+  /**
+   * A basic constructor.
+   * @param notes The list of note columns to use.
+   * @param tempo The tempo to play them at.
+   */
   public MidiViewImpl(List<NoteColumn> notes, int tempo) {
     this.notes = notes;
     this.tempo = tempo;
@@ -73,14 +78,25 @@ public class MidiViewImpl implements IView {
     this.receiver.close(); // Only call this once you're done playing *all* notes
   }
 
+  /**
+   * A helper method to convert a notename and an octave to a pitch.
+   * @param name The name of the note.
+   * @param octave The octave the note is in
+   * @return A pitch in int form.
+   */
   private int toPitch(NoteName name, int octave) {
     return (octave * 12) + name.ordinal();
   }
 
+  @Override
   public void view() {
     long start = this.synth.getMicrosecondPosition();
     start += 1000000;
+    int max = 0;
     for (NoteColumn n : this.notes) {
+      if (!n.getBeats().keySet().isEmpty()) {
+        max = Math.max(max, Collections.max(n.getBeats().keySet()));
+      }
       for (Integer i : n.getBeats().keySet()) {
         Note note = n.getBeats().get(i);
         if (note.getHead()) {
@@ -88,29 +104,15 @@ public class MidiViewImpl implements IView {
             this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument() - 1,
                     this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
                     start + (i * this.tempo));
-          } catch (InvalidMidiDataException e) {
-            e.printStackTrace();
-          }
-        }
-        if (!n.getBeats().containsKey(i + 1)) {
-          note = n.getBeats().get(i);
-          try {
             this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument() - 1,
                             this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
-                    start + ((i + 1) * this.tempo));
+                    start + (note.getEnd() * this.tempo));
           } catch (InvalidMidiDataException e) {
             e.printStackTrace();
           }
         }
       }
     }
-    int max = 0;
-
-    for (NoteColumn n : this.notes) {
-      if (!n.getBeats().keySet().isEmpty()) {
-        max = Math.max(max, Collections.max(n.getBeats().keySet()));
-      }
-  }
     try {
       sleep((max * this.tempo) / 1000);
     } catch (InterruptedException e) {

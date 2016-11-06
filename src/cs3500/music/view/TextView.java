@@ -29,7 +29,9 @@ public class TextView implements IView {
 
     int lines = 0;
     for (NoteColumn n : this.notes) {
-      lines = Math.max(lines, Collections.max(n.getBeats().keySet()));
+      if (!n.getBeats().keySet().isEmpty()) {
+        lines = Math.max(lines, Collections.max(n.getBeats().keySet()));
+      }
     }
     int length = Integer.toString(lines).length();
     String pad = "%" + Integer.toString(length) + "d";
