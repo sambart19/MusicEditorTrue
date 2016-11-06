@@ -20,7 +20,7 @@ public class ConcreteGuiViewPanel extends JPanel {
 
   ConcreteGuiViewPanel(List<NoteColumn> notes) {
     this.notes = notes;
-    this.gridScale = 10;
+    this.gridScale = 20;
   }
   @Override
   public void paintComponent(Graphics g){
@@ -30,7 +30,7 @@ public class ConcreteGuiViewPanel extends JPanel {
     // and methods on it that may be useful
     this.drawTopRow(g);
     for (int i = 0; i < notes.size(); i++) {
-      this.drawRow(g, notes.get(i), i * gridScale + 50);
+      this.drawRow(g, notes.get(i), i * gridScale + 10);
     }
   }
 
@@ -76,7 +76,7 @@ public class ConcreteGuiViewPanel extends JPanel {
         temp += " ";
       }
       g.drawChars(temp.toCharArray(), 0,
-              Integer.toString(maxBeat() + 16).length(), 50 + i * 16 * this.gridScale, 40);
+              Integer.toString(maxBeat() + 16).length(), 50 + i * 16 * this.gridScale, 10);
     }
   }
 
