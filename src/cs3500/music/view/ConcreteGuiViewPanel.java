@@ -2,6 +2,7 @@ package cs3500.music.view;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +20,7 @@ public class ConcreteGuiViewPanel extends JPanel {
   private int gridScale;
 
   ConcreteGuiViewPanel(List<NoteColumn> notes) {
+    Collections.reverse(notes);
     this.notes = notes;
     this.gridScale = 20;
   }
@@ -29,7 +31,7 @@ public class ConcreteGuiViewPanel extends JPanel {
     // Look for more documentation about the Graphics class,
     // and methods on it that may be useful
     this.drawTopRow(g);
-    for (int i = 0; i < notes.size(); i++) {
+    for (int i = 0; i < this.notes.size(); i++) {
       this.drawRow(g, notes.get(i), i * gridScale + 10);
     }
   }

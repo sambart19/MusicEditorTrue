@@ -1,22 +1,24 @@
 package cs3500.music.view;
 
 import java.util.List;
-import java.util.Objects;
+
 
 import javax.sound.midi.*;
 
 import cs3500.music.Note;
 import cs3500.music.NoteColumn;
 import cs3500.music.NoteName;
-import cs3500.music.model.IMusicModel;
+
+import static java.lang.Thread.sleep;
+
 
 /**
  * A skeleton for MIDI playback
  */
 
 public class MidiViewImpl implements IView {
-  private final Synthesizer synth;
-  private final Receiver receiver;
+  private Synthesizer synth;
+  private Receiver receiver;
   private List<NoteColumn> notes;
   private int tempo;
 
@@ -74,8 +76,9 @@ public class MidiViewImpl implements IView {
     return (octave * 12) + name.ordinal();
   }
 
-  public void view() {
+  public void view() throws InvalidMidiDataException{
     long start = this.synth.getMicrosecondPosition();
+    start += 5000000;
     for (NoteColumn n : this.notes) {
       for (int i = 0; i < n.getBeats().size(); i++) {
 
@@ -86,15 +89,20 @@ public class MidiViewImpl implements IView {
               this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument(),
                       this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
                       start + (i * this.tempo));
-            } catch (InvalidMidiDataException e) { }
+            } catch (InvalidMidiDataException e) {
+              e.printStackTrace();
+            }
           }
-        } else if (i > 0 && n.getBeats().get(i - 1) != null) {
-          Note note = n.getBeats().get(i - 1);
-          try {
-            this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument(),
-                            this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
-                    start + (i * this.tempo));
-          } catch (InvalidMidiDataException e) { }
+          if (i < n.getBeats().size() - 1 && n.getBeats().get(i + 1) == null) {
+            note = n.getBeats().get(i);
+            try {
+              this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument(),
+                              this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
+                      start + ((i + 1) * this.tempo));
+            } catch (InvalidMidiDataException e) {
+              e.printStackTrace();
+            }
+          }
         }
       }
     }
@@ -103,8 +111,10 @@ public class MidiViewImpl implements IView {
       max = Math.max(max, n.getBeats().size());
     }
     try {
-      wait(max * this.tempo);
-    } catch (InterruptedException e) { }
+      sleep((max * this.tempo) / 1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     this.receiver.close();
   }
 }

@@ -1,7 +1,6 @@
 package cs3500.music;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * Designed to represent a note with octave included.
@@ -10,7 +9,7 @@ public class NoteColumn implements Comparable<NoteColumn> {
 
   private final NoteName name;
   private final int octave;
-  private List<Note> beats;
+  private HashMap<Integer, Note> beats;
 
   /**
    * Gets the notename of this note.
@@ -32,10 +31,10 @@ public class NoteColumn implements Comparable<NoteColumn> {
    * Gets the beats of this note.
    * @return The beats of this note.
    */
-  public List<Note> getBeats() {
-    List<Note> result = new ArrayList<Note>();
-    for (Note n : this.beats) {
-      result.add(n);
+  public HashMap<Integer, Note> getBeats() {
+    HashMap<Integer, Note> result = new HashMap<>();
+    for (Integer i : this.beats.keySet()) {
+      result.put(i, this.beats.get(i));
     }
     return result;
   }
@@ -51,7 +50,7 @@ public class NoteColumn implements Comparable<NoteColumn> {
     }
     this.name = name;
     this.octave = octave;
-    this.beats = new ArrayList<Note>();
+    this.beats = new HashMap<Integer, Note>();
   }
 
   /**
@@ -81,18 +80,11 @@ public class NoteColumn implements Comparable<NoteColumn> {
       throw new IllegalArgumentException("duration cannot be less than one");
     }
 
-    while (start >= this.beats.size()) {
-      this.beats.add(null);
-    }
-
-    this.beats.set(start, new Note(true, volume, instrument));
+    this.beats.put(start, new Note(true, volume, instrument));
     int count = 1;
 
     while (duration > 1) {
-      if (start + count >= this.beats.size()) {
-        this.beats.add(null);
-      }
-      this.beats.set(start + count, new Note(false, volume, instrument));
+      this.beats.put(start + count, new Note(false, volume, instrument));
       count++;
       duration--;
     }
@@ -106,7 +98,7 @@ public class NoteColumn implements Comparable<NoteColumn> {
    * @param start = The index of the note to be removed.
    */
   public void removeBeat(int start) {
-    if (start < 0 || start >= this.beats.size()) {
+    if (start < 0 || !this.beats.containsKey(start)) {
       throw new IllegalArgumentException("start index out of range");
     }
 
@@ -114,11 +106,11 @@ public class NoteColumn implements Comparable<NoteColumn> {
       throw new IllegalArgumentException("index not at the start of a note");
     }
 
-    this.beats.set(start, null);
+    this.beats.remove(start);
 
     int count = 1;
-    while (start + count < this.beats.size() && this.print(start + count).equals("  |  ")) {
-      this.beats.set(start + count, null);
+    while (this.beats.containsKey(start + count) && this.print(start + count).equals("  |  ")) {
+      this.beats.remove(start + count);
       count++;
     }
   }
@@ -137,9 +129,7 @@ public class NoteColumn implements Comparable<NoteColumn> {
    * @return The beat given, if out of range return "     ".
    */
   public String print(int line) {
-    if (line >= this.beats.size()) {
-      return "     ";
-    } else if (this.beats.get(line) == null) {
+    if (!this.beats.containsKey(line)) {
       return "     ";
     } else {
       return this.beats.get(line).toString();
