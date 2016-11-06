@@ -7,7 +7,7 @@ import javax.sound.midi.InvalidMidiDataException;
  */
 public interface IView {
   /**
-   * The method that draws this view.
+   * The method that shows this view.
    */
   void view();
 }

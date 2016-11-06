@@ -8,7 +8,7 @@ import java.util.List;
 import cs3500.music.NoteColumn;
 
 /**
- * A skeleton Frame (i.e., a window) in Swing
+ * A Frame in the window in which the GuiPanel is shown.
  */
 public class GuiViewFrame extends javax.swing.JFrame implements IView {
 
@@ -16,25 +16,27 @@ public class GuiViewFrame extends javax.swing.JFrame implements IView {
   private final JPanel displayPanel; // You may want to refine this to a subtype of JPanel
 
   /**
-   * Creates new GuiView
+   * Creates new GuiView with a JScrollPane class around it in order to enable scrolling if needed.
    */
   public GuiViewFrame(List<NoteColumn> notes) {
     this.notes = notes;
-    this.displayPanel = new ConcreteGuiViewPanel(notes);
+    this.displayPanel = new GuiPanel(notes);
     JScrollPane scrollPanel = new JScrollPane(displayPanel);
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     this.getContentPane().add(scrollPanel);
     this.pack();
   }
 
-
+  /**
+   * Allows the window to be shown.
+   */
   public void view(){
     this.setVisible(true);
   }
 
   @Override
   public Dimension getPreferredSize(){
-    return new Dimension(500, 500);
+    return new Dimension(1000, 1000);
   }
 
 }

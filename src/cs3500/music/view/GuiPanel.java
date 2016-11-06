@@ -3,6 +3,7 @@ package cs3500.music.view;
 import java.awt.*;
 
 import java.util.Collections;
+
 import java.util.List;
 
 import javax.swing.*;
@@ -10,13 +11,18 @@ import javax.swing.*;
 import cs3500.music.NoteColumn;
 
 /**
- * A dummy view that simply draws a string 
+ * This view creates the JPanel object that has the notes drawn out on a grid.
  */
-public class ConcreteGuiViewPanel extends JPanel {
+class GuiPanel extends JPanel {
   private List<NoteColumn> notes;
   private int gridScale;
 
-  ConcreteGuiViewPanel(List<NoteColumn> notes) {
+  /**
+   * Constructor reverses the order of the note columns to make it easier to draw the higher pitch
+   * columns on top.
+   * @param notes The intermediate representation of the music model
+   */
+ GuiPanel(List<NoteColumn> notes) {
     Collections.reverse(notes);
     this.notes = notes;
     this.gridScale = 20;
@@ -38,7 +44,7 @@ public class ConcreteGuiViewPanel extends JPanel {
    * correspond to the number of different note-names there are + 1.
    * @param g The graphics class used to draw.
    */
-  public void drawGrid(Graphics g) {
+  private void drawGrid(Graphics g) {
     //Draws the row lines
     for (int i = 0; i <= notes.size(); i++) {
       g.drawLine(50, i * gridScale + 10, (this.maxBeat() + 4) * gridScale  + 50, i * gridScale + 10);
@@ -56,7 +62,7 @@ public class ConcreteGuiViewPanel extends JPanel {
    * the notenames at correct position
    * @param g The graphics object used to draw.
    */
-  public void drawNotes(Graphics g) {
+  private void drawNotes(Graphics g) {
     //Draws the beats at proper location
     for (int i = 0; i < notes.size(); i++) {
       NoteColumn row = notes.get(i);
@@ -77,7 +83,12 @@ public class ConcreteGuiViewPanel extends JPanel {
     }
   }
 
-  public void drawTopRow(Graphics g) {
+  /**
+   * Draws the top row which consists of the Character representation of every 16 beats and also
+   * spaced correctly.
+   * @param g The graphics object used to draw.
+   */
+  private void drawTopRow(Graphics g) {
     for (int i = 0; i < maxBeat() / 16 + 1; i++) {
       String temp = Integer.toString(i * 16);
       while (temp.length() < Integer.toString(maxBeat() + 16).length()) {
