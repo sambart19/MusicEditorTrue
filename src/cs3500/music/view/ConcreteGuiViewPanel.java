@@ -1,15 +1,12 @@
 package cs3500.music.view;
 
 import java.awt.*;
-import java.util.ArrayList;
+
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 
 import javax.swing.*;
 
-import cs3500.music.Note;
 import cs3500.music.NoteColumn;
 
 /**
@@ -52,8 +49,7 @@ public class ConcreteGuiViewPanel extends JPanel {
     }
     g.drawChars(oct.toCharArray(), 0, 5, 0, y + this.gridScale);
     // Draws the notes at proper lcoations
-    for (int i = 0; i < row.getBeats().size(); i++) {
-      if (Objects.nonNull(row.getBeats().get(i))) {
+    for (Integer i : row.getBeats().keySet()) {
         if (row.getBeats().get(i).getHead()) {
           g.setColor(Color.green);
         } else {
@@ -62,7 +58,6 @@ public class ConcreteGuiViewPanel extends JPanel {
         g.fillRect(50 + (i * this.gridScale), y, this.gridScale, this.gridScale);
         g.setColor(Color.black);
       }
-    }
 
     // Draws empty white rectangles
     for (int i = 0; i < maxBeat() / 4 + 1; i++) {
@@ -97,7 +92,7 @@ public class ConcreteGuiViewPanel extends JPanel {
   private int maxBeat() {
     int result = 0;
     for (NoteColumn a  : notes) {
-      result = Math.max(a.getBeats().size(), result);
+      result = Math.max(Collections.max(a.getBeats().keySet()), result);
     }
     return  result;
   }
