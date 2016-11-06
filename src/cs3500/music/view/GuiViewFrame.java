@@ -20,9 +20,10 @@ public class GuiViewFrame extends javax.swing.JFrame implements IView {
    */
   public GuiViewFrame(List<NoteColumn> notes) {
     this.notes = notes;
-    this.displayPanel = new ConcreteGuiViewPanel(this.notes);
+    this.displayPanel = new ConcreteGuiViewPanel(notes);
+    JScrollPane scrollPanel = new JScrollPane(displayPanel);
     this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    this.getContentPane().add(displayPanel);
+    this.getContentPane().add(scrollPanel);
     this.pack();
   }
 
@@ -33,7 +34,7 @@ public class GuiViewFrame extends javax.swing.JFrame implements IView {
 
   @Override
   public Dimension getPreferredSize(){
-    return new Dimension(10000, 10000);
+    return new Dimension(500, 500);
   }
 
 }

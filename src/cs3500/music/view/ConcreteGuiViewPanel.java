@@ -28,42 +28,53 @@ public class ConcreteGuiViewPanel extends JPanel {
     // Look for more documentation about the Graphics class,
     // and methods on it that may be useful
     this.drawTopRow(g);
-    for (int i = 0; i < this.notes.size(); i++) {
-      this.drawRow(g, notes.get(i), i * gridScale + 10);
+    this.drawNotes(g);
+    this.drawGrid(g);
+
+  }
+
+  /**
+   * This method draws out all straight lines for the rows. The number of lines drawn should
+   * correspond to the number of different note-names there are + 1.
+   * @param g The graphics class used to draw.
+   */
+  public void drawGrid(Graphics g) {
+    //Draws the row lines
+    for (int i = 0; i <= notes.size(); i++) {
+      g.drawLine(50, i * gridScale + 10, (this.maxBeat() + 4) * gridScale  + 50, i * gridScale + 10);
+    }
+
+    //Draws the col lines
+    for (int i = 0; i <= maxBeat() / 4 + 1; i++) {
+      g.drawLine(50 + i * gridScale * 4, 10, 50 + i * gridScale * 4, this.notes.size() * gridScale + 10);
     }
   }
 
   /**
-   * We realize now that NoteColumn name may indicate that it represents a column, but in
-   * actuality it represents an array of columns, aka a row, aka get wrekt.
-   *
-   * Method draws out the row.
-   *
-   * @param row A NoteColumn(1 row).
+   * Draws rectangles that represent notes at proper position. The rectangle is green if its a head
+   * and it is orange if its not. Each rectangle is gridscale wide by gridscale length. Also draws
+   * the notenames at correct position
+   * @param g The graphics object used to draw.
    */
-  public void drawRow(Graphics g, NoteColumn row, int y) {
-    g.setColor(Color.black);
-    String oct = row.toString();
-    while (oct.length() < 5) {
-      oct += " ";
-    }
-    g.drawChars(oct.toCharArray(), 0, 5, 0, y + this.gridScale);
-    // Draws the notes at proper lcoations
-    for (Integer i : row.getBeats().keySet()) {
-        if (row.getBeats().get(i).getHead()) {
-          g.setColor(Color.green);
+  public void drawNotes(Graphics g) {
+    //Draws the beats at proper location
+    for (int i = 0; i < notes.size(); i++) {
+      NoteColumn row = notes.get(i);
+      String name = row.toString();
+      while (name.length() < 5) {
+        name += " ";
+      }
+      g.drawChars(name.toCharArray(), 0, 5, 0, i * gridScale + this.gridScale);
+      for (Integer loc : row.getBeats().keySet()) {
+        if (row.getBeats().get(loc).getHead()) {
+          g.setColor(Color.green); //if this note is a head
         } else {
           g.setColor(Color.orange);
         }
-        g.fillRect(50 + (i * this.gridScale), y, this.gridScale, this.gridScale);
+        g.fillRect(50 + (loc * this.gridScale), i * gridScale + 10, this.gridScale, this.gridScale);
         g.setColor(Color.black);
       }
-
-    // Draws empty white rectangles
-    for (int i = 0; i < maxBeat() / 4 + 1; i++) {
-      g.drawRect(50 + (i * this.gridScale * 4), y, 4 * this.gridScale, this.gridScale);
     }
-
   }
 
   public void drawTopRow(Graphics g) {
@@ -97,6 +108,15 @@ public class ConcreteGuiViewPanel extends JPanel {
       }
     }
     return  result;
+  }
+
+  @Override
+  public Dimension getPreferredSize(){
+    int x, y;
+    y = (this.notes.size()) * 50;
+    x = (this.maxBeat() + 8) * gridScale;
+
+    return new Dimension(x, y);
   }
 
 }
