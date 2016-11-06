@@ -1,15 +1,26 @@
 package cs3500.music.view;
 
+import java.util.List;
+import java.util.Objects;
+
 import javax.sound.midi.*;
+
+import cs3500.music.Note;
+import cs3500.music.NoteColumn;
+import cs3500.music.NoteName;
+import cs3500.music.model.IMusicModel;
 
 /**
  * A skeleton for MIDI playback
+ */
 
 public class MidiViewImpl implements IView {
   private final Synthesizer synth;
   private final Receiver receiver;
+  private List<NoteColumn> notes;
 
-  public MidiViewImpl() {
+  public MidiViewImpl(List<NoteColumn> notex) {
+    this.notes = notes;
     try {
       this.synth = MidiSystem.getSynthesizer();
       this.receiver = synth.getReceiver();
@@ -47,7 +58,7 @@ public class MidiViewImpl implements IView {
    * @see <a href="https://en.wikipedia.org/wiki/General_MIDI">
    *   https://en.wikipedia.org/wiki/General_MIDI
    *   </a>
-
+    */
 
   public void playNote() throws InvalidMidiDataException {
     MidiMessage start = new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 64);
@@ -56,5 +67,23 @@ public class MidiViewImpl implements IView {
     this.receiver.send(stop, this.synth.getMicrosecondPosition() + 200000);
     this.receiver.close(); // Only call this once you're done playing *all* notes
   }
+
+  private int toPitch(NoteName name, int octave) {
+    return (octave * 12) + name.ordinal();
+  }
+
+  public void view() {
+    long start = this.synth.getMicrosecondPosition();
+    for (NoteColumn n : this.notes) {
+      for (int i = 0; i < n.getBeats().size(); i++) {
+
+        if (n.getBeats().get(i) != null) {
+          Note note = n.getBeats().get(i);
+          if (note.getHead()) {
+            this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument(), this.toPitch(n.getName(), n.getOctave()), note.getVolume()), start + (i * ));
+          }
+        }
+      }
+    }
+  }
 }
-*/

@@ -9,7 +9,7 @@ import cs3500.music.model.MusicModel;
  */
 public class MusicModelComposition implements CompositionBuilder<IMusicModel> {
 
-  public int tempo;
+  //public int tempo;
   private IMusicModel model;
 
   /**
@@ -21,7 +21,7 @@ public class MusicModelComposition implements CompositionBuilder<IMusicModel> {
 
   @Override
   public CompositionBuilder<IMusicModel> setTempo(int tempo) {
-    this.tempo = tempo;
+    this.model.tempo = tempo;
     return this;
   }
 
