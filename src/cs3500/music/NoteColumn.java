@@ -32,11 +32,11 @@ public class NoteColumn implements Comparable<NoteColumn> {
    * @return The beats of this note.
    */
   public HashMap<Integer, Note> getBeats() {
-    HashMap<Integer, Note> result = new HashMap<>();
-    for (Integer i : this.beats.keySet()) {
-      result.put(i, this.beats.get(i));
-    }
-    return result;
+    //HashMap<Integer, Note> result = new HashMap<>();
+    //for (Integer i : this.beats.keySet()) {
+    //  result.put(i, this.beats.get(i));
+    //}
+    return this.beats;
   }
 
   /**

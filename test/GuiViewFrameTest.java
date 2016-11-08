@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import cs3500.music.NoteColumn;
 import cs3500.music.model.MusicModel;
 import cs3500.music.util.CompositionBuilder;
 import cs3500.music.util.MusicModelComposition;
@@ -22,7 +23,7 @@ public class GuiViewFrameTest {
   public static void main(String[] args) {
     CompositionBuilder comp = new MusicModelComposition();
 
-    File f = new File("mystery-2.txt");
+    File f = new File("simpsons.txt");
     try {
       Readable file = new FileReader(f);
       MusicModel m = (MusicModel)MusicReader.parseFile(file, comp);
@@ -30,8 +31,8 @@ public class GuiViewFrameTest {
       b.view();
       MidiViewImpl midi = new MidiViewImpl(m.print(), m.getTempo());
       midi.view();
-      TextView t = new TextView(m.print());
-      t.view();
+      //TextView t = new TextView(m.print());
+      //t.view();
 
     } catch (FileNotFoundException e) {
       e.printStackTrace();

@@ -51,17 +51,20 @@ class GuiPanel extends JPanel {
    * @param g The graphics class used to draw.
    */
   private void drawGrid(Graphics g) {
+    int max = maxBeat();
+
     //Draws the row lines
     for (int i = 0; i <= notes.size(); i++) {
-      g.drawLine(50, i * gridScale + 10, (this.maxBeat() + 4) * gridScale + 50,
+      g.drawLine(50, i * gridScale + 10, (max + (4 - (max % 4))) * gridScale + 50,
               i * gridScale + 10);
     }
 
     //Draws the col lines
-    for (int i = 0; i <= maxBeat() / 4 + 1; i++) {
+    for (int i = 0; i <= max / 4 + (4 - (max % 4)); i++) {
       g.drawLine(50 + i * gridScale * 4, 10, 50 + i * gridScale * 4,
               this.notes.size() * gridScale + 10);
     }
+    System.out.println(max);
   }
 
   /**
@@ -99,13 +102,14 @@ class GuiPanel extends JPanel {
    * @param g The graphics object used to draw.
    */
   private void drawTopRow(Graphics g) {
-    for (int i = 0; i < maxBeat() / 16 + 1; i++) {
+    int max = maxBeat();
+    for (int i = 0; i < max / 16 + 1; i++) {
       String temp = Integer.toString(i * 16);
-      while (temp.length() < Integer.toString(maxBeat() + 16).length()) {
+      while (temp.length() < Integer.toString(max + 16).length()) {
         temp += " ";
       }
       g.drawChars(temp.toCharArray(), 0,
-              Integer.toString(maxBeat() + 16).length(), 50 + i * 16 * this.gridScale, 10);
+              Integer.toString(max + 16).length(), 50 + i * 16 * this.gridScale, 10);
     }
   }
 
@@ -137,7 +141,7 @@ class GuiPanel extends JPanel {
   public Dimension getPreferredSize() {
     int x;
     int y;
-    y = (this.notes.size()) * 50;
+    y = (this.notes.size()) * gridScale + 50;
     x = (this.maxBeat() + 8) * gridScale;
 
     return new Dimension(x, y);
