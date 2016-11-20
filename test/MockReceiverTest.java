@@ -14,7 +14,7 @@ import cs3500.music.view.IView;
 import cs3500.music.view.MidiViewImpl;
 
 import static org.junit.Assert.assertEquals;
-
+/**
 public class MockReceiverTest {
 
   @Test
@@ -125,3 +125,4 @@ public class MockReceiverTest {
 
   }
 }
+*/

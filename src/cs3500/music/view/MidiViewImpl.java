@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.List;
 
 
+import javax.sound.midi.MidiEvent;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.MidiSystem;
@@ -11,6 +14,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Track;
 
 import cs3500.music.MockSynth;
 import cs3500.music.Note;
@@ -25,8 +29,7 @@ import static java.lang.Thread.sleep;
  */
 
 public class MidiViewImpl implements IView {
-  private Synthesizer synth;
-  private Receiver receiver;
+  private Sequencer seq;
   private List<NoteColumn> notes;
   private int tempo;
 
@@ -39,12 +42,18 @@ public class MidiViewImpl implements IView {
     this.notes = notes;
     this.tempo = tempo;
     try {
-      this.synth = MidiSystem.getSynthesizer();
-      this.receiver = synth.getReceiver();
-      this.synth.open();
+      this.seq = MidiSystem.getSequencer();
+      this.seq.open();
     } catch (MidiUnavailableException e) {
       e.printStackTrace();
     }
+
+    try {
+      this.build();
+    } catch (InvalidMidiDataException e) {
+      e.printStackTrace();
+    }
+    this.seq.setTempoInMPQ(tempo);
   }
 
   /**
@@ -53,6 +62,7 @@ public class MidiViewImpl implements IView {
    * @param tempo The tempo.
    * @param s The stringbuilder.
    */
+  /*
   public MidiViewImpl(List<NoteColumn> notes, int tempo, StringBuilder s) {
     this.notes = notes;
     this.tempo = tempo;
@@ -63,18 +73,28 @@ public class MidiViewImpl implements IView {
     } catch (MidiUnavailableException e) {
       e.printStackTrace();
     }
-  }
+  }*/
 
   /**
-   * Relevant classes and methods from the javax.sound.midi library:
-    */
-
-  public void playNote() throws InvalidMidiDataException {
-    MidiMessage start = new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 64);
-    MidiMessage stop = new ShortMessage(ShortMessage.NOTE_OFF, 0, 60, 64);
-    this.receiver.send(start, -1);
-    this.receiver.send(stop, this.synth.getMicrosecondPosition() + 200000);
-    this.receiver.close(); // Only call this once you're done playing *all* notes
+   * Builds the sequence for the sequencer.
+   * @throws InvalidMidiDataException
+   */
+  private void build() throws InvalidMidiDataException{
+    Sequence sequence = new Sequence(Sequence.PPQ, 1);
+    sequence.createTrack();
+    Track track = sequence.getTracks()[0];
+    for (NoteColumn n : this.notes) {
+      for (Integer i : n.getBeats().keySet()) {
+        Note note = n.getBeats().get(i);
+        if (note.getHead()) {
+          track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument() - 1,
+                  this.toPitch(n.getName(), n.getOctave()), note.getVolume()), i));
+          track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument() - 1,
+                  this.toPitch(n.getName(), n.getOctave()), note.getVolume()), i));
+        }
+      }
+    }
+    this.seq.setSequence(sequence);
   }
 
   /**
@@ -89,37 +109,6 @@ public class MidiViewImpl implements IView {
 
   @Override
   public void view() {
-    long start = this.synth.getMicrosecondPosition();
-    start += 1000000;
-    int max = 0;
-    for (NoteColumn n : this.notes) {
-      if (!n.getBeats().keySet().isEmpty()) {
-        max = Math.max(max, Collections.max(n.getBeats().keySet()));
-      }
-      for (Integer i : n.getBeats().keySet()) {
-        Note note = n.getBeats().get(i);
-        if (note.getHead()) {
-          try {
-            this.receiver.send(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument() - 1,
-                    this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
-                    start + (i * this.tempo));
-            this.receiver.send(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument() - 1,
-                            this.toPitch(n.getName(), n.getOctave()), note.getVolume()),
-                    start + (note.getEnd() * this.tempo));
-          } catch (InvalidMidiDataException e) {
-            e.printStackTrace();
-          }
-        }
-      }
-    }
-    long end = this.synth.getMicrosecondPosition();
-    end = end - start;
-    end = end / 1000;
-    try {
-      sleep(Math.max((((max * this.tempo) / 1000) - end), 1));
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    this.receiver.close();
+    this.seq.start();
   }
 }

@@ -10,7 +10,7 @@ import cs3500.music.NoteColumn;
 /**
  * A Frame in the window in which the GuiPanel is shown.
  */
-public class GuiViewFrame extends javax.swing.JFrame implements IView {
+public class GuiViewFrame extends javax.swing.JFrame implements GuiView {
 
 
   /**
