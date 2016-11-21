@@ -10,13 +10,4 @@ public interface IController {
    */
   public void play();
 
-  public void removeNote();
-
-  public void addNote();
-
-  public void scroll();
-
-  public void jumpEnd();
-
-  public void jumpStart();
 }

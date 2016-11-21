@@ -76,7 +76,8 @@ public class MidiViewImpl implements IView {
   }*/
 
   /**
-   * Builds the sequence for the sequencer.
+   * Loads all the notes onto a track, which loads onto a sequence which is
+   * used by the sequencer.
    * @throws InvalidMidiDataException
    */
   private void build() throws InvalidMidiDataException{
@@ -110,5 +111,22 @@ public class MidiViewImpl implements IView {
   @Override
   public void view() {
     this.seq.start();
+    this.seq.setTempoInMPQ(tempo);
+  }
+
+  /**
+   * Gets the current location of the sequencer which is used to help sync the MIDI View
+   * with the GUI View.
+   * @return  Current Tick Position of hte sequencer.
+   */
+  public long getLoc() {
+    return this.seq.getTickPosition();
+  }
+
+  /**
+   * Pauses the sequencer which causes notes to stop playing.
+   */
+  public void pause() {
+    this.seq.stop();
   }
 }

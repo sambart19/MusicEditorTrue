@@ -16,17 +16,23 @@ public class KeyHandler implements KeyListener{
 
   @Override
   public void keyPressed(KeyEvent e) {
-    this.pressed.get(e.getKeyCode()).run();
+    if (pressed.containsKey(e.getKeyCode())) {
+      this.pressed.get(e.getKeyCode()).run();
+    }
   }
 
   @Override
   public void keyReleased(KeyEvent e) {
-    this.released.get(e.getKeyCode()).run();
+    if (released.containsKey(e.getKeyCode())) {
+      this.released.get(e.getKeyCode()).run();
+    }
   }
 
   @Override
   public void keyTyped(KeyEvent e) {
-    this.typed.get(e.getKeyCode()).run();
+    if (typed.containsKey(e.getKeyCode())) {
+      this.typed.get(e.getKeyCode()).run();
+    }
   }
 
   /**

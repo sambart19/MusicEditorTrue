@@ -19,6 +19,7 @@ import cs3500.music.NoteColumn;
 class GuiPanel extends JPanel {
   private List<NoteColumn> notes;
   private int gridScale;
+  private long loc;
 
   /**
    * Constructor reverses the order of the note columns to make it easier to draw the higher pitch
@@ -26,24 +27,25 @@ class GuiPanel extends JPanel {
    *
    * @param notes The intermediate representation of the music model
    */
-  GuiPanel(List<NoteColumn> notes) {
+  GuiPanel(List<NoteColumn> notes, long loc) {
     Collections.reverse(notes);
     this.notes = notes;
     this.gridScale = 20;
+    this.loc = loc;
   }
 
   @Override
   public void paintComponent(Graphics g) {
-    // Handle the default painting
     super.paintComponent(g);
-    // Look for more documentation about the Graphics class,
-    // and methods on it that may be useful
     this.drawTopRow(g);
     this.drawNotes(g);
     this.drawGrid(g);
-
+    this.drawLine(g);
   }
 
+  public void setLoc(long loc) {
+    this.loc = loc;
+  }
   /**
    * This method draws out all straight lines for the rows. The number of lines drawn should
    * correspond to the number of different note-names there are + 1.
@@ -64,7 +66,6 @@ class GuiPanel extends JPanel {
       g.drawLine(50 + i * gridScale * 4, 10, 50 + i * gridScale * 4,
               this.notes.size() * gridScale + 10);
     }
-    System.out.println(max);
   }
 
   /**
@@ -111,6 +112,25 @@ class GuiPanel extends JPanel {
       g.drawChars(temp.toCharArray(), 0,
               Integer.toString(max + 16).length(), 50 + i * 16 * this.gridScale, 10);
     }
+  }
+
+  /**
+   * Method draws the red line which indicates current position in the song.
+   * @param g Graphics object used to draw.
+   */
+  public void drawLine(Graphics g) {
+    g.setColor(Color.red);
+    g.fillRect(50 + (int) loc * gridScale, 10, 5, this.notes.size() * gridScale);
+    g.setColor(Color.black);
+  }
+
+  public int getLinePos() {
+    return 50 + (int) loc * gridScale;
+  }
+
+  public int endpos() {
+    int max = this.maxBeat();
+    return ((max + (4 - (max % 4))) * gridScale + 50);
   }
 
   /**
