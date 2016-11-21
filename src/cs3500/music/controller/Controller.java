@@ -54,8 +54,10 @@ public class Controller implements IController, ActionListener{
                   Integer.parseInt(view.guiAccess("duration")),
                   Integer.parseInt(view.guiAccess("volume")),
                   Integer.parseInt(view.guiAccess("instrument")));
+          System.out.println("Just added a new note");
         } catch (NumberFormatException f) {
           // Do nothing
+          System.out.println("NEW NOTE WAS UNSUCCESFFULY ADDED");
         }
         break;
 

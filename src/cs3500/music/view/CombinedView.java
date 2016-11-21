@@ -77,6 +77,7 @@ public class CombinedView implements GuiView{
       case "rebuild" : this.gui.refresh(this.midi.getLoc());
         try {
           this.midi.build();
+          System.out.println("MIDI JUST GOT REBUILT");
         } catch (InvalidMidiDataException e) {
           e.printStackTrace();
         }
