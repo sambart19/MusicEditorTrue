@@ -2,7 +2,6 @@ package cs3500.music.view;
 
 import java.util.List;
 
-
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
@@ -48,14 +47,12 @@ public class MidiViewImpl implements IView {
     this.seq.setTempoInMPQ(tempo);
   }
 
-
-
   /**
    * Loads all the notes onto a track, which loads onto a sequence which is
    * used by the sequencer.
-   * @throws InvalidMidiDataException
+   * @throws InvalidMidiDataException The exception thrown.
    */
-  public void build() throws InvalidMidiDataException{
+  public void build() throws InvalidMidiDataException {
     Sequence sequence = new Sequence(Sequence.PPQ, 1);
     sequence.createTrack();
     Track track = sequence.getTracks()[0];
@@ -66,11 +63,13 @@ public class MidiViewImpl implements IView {
           track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument() - 1,
                   this.toPitch(n.getName(), n.getOctave()), note.getVolume()), i));
           if (note.getEnd() - i != 1) {
-            track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument() - 1,
-                    this.toPitch(n.getName(), n.getOctave()), note.getVolume()), note.getEnd()));
+            track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF,
+                    note.getInstrument() - 1, this.toPitch(n.getName(), n.getOctave()),
+                    note.getVolume()), note.getEnd()));
           } else {
-            track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument() - 1,
-                    this.toPitch(n.getName(), n.getOctave()), note.getVolume()), i));
+            track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF,
+                    note.getInstrument() - 1, this.toPitch(n.getName(), n.getOctave()),
+                    note.getVolume()), i));
           }
         }
       }

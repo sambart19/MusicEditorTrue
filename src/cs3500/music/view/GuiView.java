@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 public interface GuiView extends IView {
 
   /**
-   * Allows the view to scroll forward
+   * Allows the view to scroll forward.
    */
   public void forward();
 

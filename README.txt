@@ -1,3 +1,11 @@
+How to run jar:
+java -jar HW05.jar MUSICFILE VIEWTYPE
+VIEWTYPE is one of:
+-midi
+-visual
+-console
+-combined
+
 IMusicModel
 - A basic interface for the model.
 - includes four methods, addNote, addBeat, removeBeat, print

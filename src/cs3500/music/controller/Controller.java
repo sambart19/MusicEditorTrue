@@ -11,7 +11,7 @@ import cs3500.music.view.MidiViewImpl;
 /**
  * Controller for the music model.
  */
-public class Controller implements IController, ActionListener{
+public class Controller implements IController, ActionListener {
 
   private IMusicModel model;
   private CombinedView view;
@@ -89,7 +89,7 @@ public class Controller implements IController, ActionListener{
        * if statement does not get evaluated.
        */
       System.out.print("");
-     if (this.view.getIsPlaying()) {
+      if (this.view.getIsPlaying()) {
         this.view.parse("refresh");
       }
     }

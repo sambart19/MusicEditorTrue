@@ -50,6 +50,7 @@ class GuiPanel extends JPanel {
   public void setLoc(long loc) {
     this.loc = loc;
   }
+
   /**
    * This method draws out all straight lines for the rows. The number of lines drawn should
    * correspond to the number of different note-names there are + 1.

@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Handles keypresses
+ * Handles keypresses.
  */
-public class KeyHandler implements KeyListener{
+public class KeyHandler implements KeyListener {
 
   public Map<Integer, Runnable> typed = new HashMap<>();
   public Map<Integer, Runnable> pressed = new HashMap<>();

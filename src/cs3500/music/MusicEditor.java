@@ -1,5 +1,7 @@
 package cs3500.music;
 
+import cs3500.music.controller.Controller;
+import cs3500.music.controller.IController;
 import cs3500.music.model.MusicModel;
 import cs3500.music.util.CompositionBuilder;
 import cs3500.music.util.MusicModelComposition;
@@ -23,7 +25,12 @@ public class MusicEditor {
     Readable file = new FileReader(f);
     CompositionBuilder comp = new MusicModelComposition();
     MusicModel m = (MusicModel) MusicReader.parseFile(file, comp);
-    IView view  = ViewFactory.makeView(args[1], m);
-    view.view();
+    if (args[1].equals("combined")) {
+      IController controller = new Controller(m);
+      controller.play();
+    } else {
+      IView view = ViewFactory.makeView(args[1], m);
+      view.view();
+    }
   }
 }

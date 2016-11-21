@@ -13,7 +13,7 @@ import cs3500.music.NoteName;
  * A view that combines the gui view and midi view. It syncs so that a red bar will represent which
  * beat the midi view is currently representing with audio.
  */
-public class CombinedView implements IView{
+public class CombinedView implements IView {
   private GuiViewFrame gui;
   private MidiViewImpl midi;
   private boolean isPlaying;
