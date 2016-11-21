@@ -2,16 +2,18 @@ package cs3500.music.view;
 
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.util.List;
 
 import javax.sound.midi.InvalidMidiDataException;
 
+import cs3500.music.NoteColumn;
 import cs3500.music.NoteName;
 
 /**
  * A view that combines the gui view and midi view. It syncs so that a red bar will represent which
  * beat the midi view is currently representing with audio.
  */
-public class CombinedView implements GuiView{
+public class CombinedView implements IView{
   private GuiViewFrame gui;
   private MidiViewImpl midi;
   private boolean isPlaying;
@@ -77,7 +79,6 @@ public class CombinedView implements GuiView{
       case "rebuild" : this.gui.refresh(this.midi.getLoc());
         try {
           this.midi.build();
-          System.out.println("MIDI JUST GOT REBUILT");
         } catch (InvalidMidiDataException e) {
           e.printStackTrace();
         }
@@ -86,6 +87,11 @@ public class CombinedView implements GuiView{
     }
   }
 
+  /**
+   * Parses a string and returns that field.
+   * @param s The string to be parsed.
+   * @return The field requested by the string.
+   */
   public String guiAccess(String s) {
     switch (s) {
       case "octave" : return this.gui.getOctave();
@@ -98,10 +104,17 @@ public class CombinedView implements GuiView{
     }
   }
 
+  /**
+   * The getter gor the notename field.
+   * @return The notename field.
+   */
   public NoteName guiNoteName() {
     return this.gui.getNoteName();
   }
 
+  /**
+   * Resets the focus to be on the display portion of the gui.
+   */
   public void resetFocus() {
     this.gui.requestFocus();
   }
@@ -112,5 +125,14 @@ public class CombinedView implements GuiView{
    */
   public boolean getIsPlaying() {
     return this.isPlaying;
+  }
+
+  /**
+   * Updates the view for the gui and the midi with the new note column.
+   * @param notes The new note column.
+   */
+  public void update(List<NoteColumn> notes) {
+    this.gui.update(notes);
+    this.midi.update(notes);
   }
 }

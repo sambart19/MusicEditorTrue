@@ -45,6 +45,10 @@ public class Controller implements IController, ActionListener{
     this.keys.addPressed(39, forward);
   }
 
+  /**
+   * Action event handler.
+   * @param e The action event to handle.
+   */
   public void actionPerformed(ActionEvent e) {
     switch (e.getActionCommand()) {
       case "Add Note":
@@ -54,10 +58,9 @@ public class Controller implements IController, ActionListener{
                   Integer.parseInt(view.guiAccess("duration")),
                   Integer.parseInt(view.guiAccess("volume")),
                   Integer.parseInt(view.guiAccess("instrument")));
-          System.out.println("Just added a new note");
+          this.view.update(this.model.print());
         } catch (NumberFormatException f) {
           // Do nothing
-          System.out.println("NEW NOTE WAS UNSUCCESFFULY ADDED");
         }
         break;
 
@@ -65,6 +68,7 @@ public class Controller implements IController, ActionListener{
         try {
           model.removeBeat(view.guiNoteName(), Integer.parseInt(view.guiAccess("octave")),
                   Integer.parseInt(view.guiAccess("location")));
+          this.view.update(this.model.print());
         } catch (NumberFormatException f) {
           // Do nothing
         }

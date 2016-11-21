@@ -43,6 +43,10 @@ class GuiPanel extends JPanel {
     this.drawLine(g);
   }
 
+  /**
+   * Sets the beat for the line.
+   * @param loc The beat the line should be on.
+   */
   public void setLoc(long loc) {
     this.loc = loc;
   }
@@ -124,10 +128,18 @@ class GuiPanel extends JPanel {
     g.setColor(Color.black);
   }
 
+  /**
+   * The current position of the line.
+   * @returnThe line position.
+   */
   public int getLinePos() {
     return 50 + (int) loc * gridScale;
   }
 
+  /**
+   * The end position of this song.
+   * @return The pixel this song ends on.
+   */
   public int endpos() {
     int max = this.maxBeat();
     return ((max + (4 - (max % 4))) * gridScale + 50);
@@ -135,7 +147,6 @@ class GuiPanel extends JPanel {
 
   /**
    * Changes the scale.
-   *
    * @param gridScale the scale
    */
   public void setGridScale(int gridScale) {
@@ -144,7 +155,6 @@ class GuiPanel extends JPanel {
 
   /**
    * Finds the maxBeat within all NoteColumns
-   *
    * @return the maxBeat within all NoteColumns.
    */
   private int maxBeat() {
@@ -165,6 +175,14 @@ class GuiPanel extends JPanel {
     x = (this.maxBeat() + 8) * gridScale;
 
     return new Dimension(x, y);
+  }
+
+  /**
+   * Updates the note column.
+   * @param notes The new note column.
+   */
+  public void update(List<NoteColumn> notes) {
+    this.notes = notes;
   }
 
 }

@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import cs3500.music.NoteColumn;
 import cs3500.music.controller.Controller;
 import cs3500.music.controller.IController;
 import cs3500.music.model.MusicModel;
@@ -25,7 +24,7 @@ public class GuiViewFrameTest {
   public static void main(String[] args) {
     CompositionBuilder comp = new MusicModelComposition();
 
-    File f = new File("mary-little-lamb.txt");
+    File f = new File("mystery-2.txt ");
     try {
       Readable file = new FileReader(f);
       MusicModel m = (MusicModel)MusicReader.parseFile(file, comp);

@@ -31,7 +31,6 @@ public class MusicModel implements IMusicModel {
 
     if (this.notes.isEmpty()) {
       notes.add(n);
-      System.out.println("ADDED A NEW NOTE COLUMN");
       return;
     }
 

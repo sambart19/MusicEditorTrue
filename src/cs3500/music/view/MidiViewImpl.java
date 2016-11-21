@@ -1,28 +1,20 @@
 package cs3500.music.view;
 
-import java.util.Collections;
 import java.util.List;
 
 
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
-import javax.sound.midi.Synthesizer;
-import javax.sound.midi.Receiver;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
-import cs3500.music.MockSynth;
 import cs3500.music.Note;
 import cs3500.music.NoteColumn;
 import cs3500.music.NoteName;
-
-import static java.lang.Thread.sleep;
-
 
 /**
  * A skeleton for MIDI playback.
@@ -90,8 +82,13 @@ public class MidiViewImpl implements IView {
         if (note.getHead()) {
           track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument() - 1,
                   this.toPitch(n.getName(), n.getOctave()), note.getVolume()), i));
-          track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument() - 1,
-                  this.toPitch(n.getName(), n.getOctave()), note.getVolume()), note.getEnd()));
+          if (note.getEnd() - i != 1) {
+            track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument() - 1,
+                    this.toPitch(n.getName(), n.getOctave()), note.getVolume()), note.getEnd()));
+          } else {
+            track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument() - 1,
+                    this.toPitch(n.getName(), n.getOctave()), note.getVolume()), i));
+          }
         }
       }
     }
@@ -128,5 +125,13 @@ public class MidiViewImpl implements IView {
    */
   public void pause() {
     this.seq.stop();
+  }
+
+  /**
+   * Updates the list of notecolumns for this view.
+   * @param notes The new list to use.
+   */
+  public void update(List<NoteColumn> notes) {
+    this.notes = notes;
   }
 }
