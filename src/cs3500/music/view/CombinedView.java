@@ -1,6 +1,11 @@
 package cs3500.music.view;
 
+import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+
+import javax.sound.midi.InvalidMidiDataException;
+
+import cs3500.music.NoteName;
 
 /**
  * A view that combines the gui view and midi view. It syncs so that a red bar will represent which
@@ -48,8 +53,9 @@ public class CombinedView implements GuiView{
    * Sets the listener for the gui.
    * @param listener The listener for the gui.
    */
-  public void setListener(KeyListener listener) {
+  public void setListeners(KeyListener listener, ActionListener actionListener) {
     this.gui.addKeyListener(listener);
+    this.gui.addActionListener(actionListener);
   }
 
   /**
@@ -68,7 +74,35 @@ public class CombinedView implements GuiView{
         break;
       case "to start" : this.gui.toStart();
         break;
+      case "rebuild" : this.gui.refresh(this.midi.getLoc());
+        try {
+          this.midi.build();
+        } catch (InvalidMidiDataException e) {
+          e.printStackTrace();
+        }
+        break;
+      default: //Doesn't do anything
     }
+  }
+
+  public String guiAccess(String s) {
+    switch (s) {
+      case "octave" : return this.gui.getOctave();
+      case "duration" : return this.gui.getDuration();
+      case "location" : return this.gui.getLoc();
+      case "instrument" : return this.gui.getInstrument();
+      case "volume" : return this.gui.getVolume();
+      default:
+        return "";
+    }
+  }
+
+  public NoteName guiNoteName() {
+    return this.gui.getNoteName();
+  }
+
+  public void resetFocus() {
+    this.gui.requestFocus();
   }
 
   /**

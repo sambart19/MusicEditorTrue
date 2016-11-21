@@ -80,7 +80,7 @@ public class MidiViewImpl implements IView {
    * used by the sequencer.
    * @throws InvalidMidiDataException
    */
-  private void build() throws InvalidMidiDataException{
+  public void build() throws InvalidMidiDataException{
     Sequence sequence = new Sequence(Sequence.PPQ, 1);
     sequence.createTrack();
     Track track = sequence.getTracks()[0];
@@ -91,7 +91,7 @@ public class MidiViewImpl implements IView {
           track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_ON, note.getInstrument() - 1,
                   this.toPitch(n.getName(), n.getOctave()), note.getVolume()), i));
           track.add(new MidiEvent(new ShortMessage(ShortMessage.NOTE_OFF, note.getInstrument() - 1,
-                  this.toPitch(n.getName(), n.getOctave()), note.getVolume()), i));
+                  this.toPitch(n.getName(), n.getOctave()), note.getVolume()), note.getEnd()));
         }
       }
     }

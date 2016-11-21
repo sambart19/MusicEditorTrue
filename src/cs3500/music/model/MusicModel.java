@@ -31,6 +31,7 @@ public class MusicModel implements IMusicModel {
 
     if (this.notes.isEmpty()) {
       notes.add(n);
+      System.out.println("ADDED A NEW NOTE COLUMN");
       return;
     }
 
@@ -161,6 +162,7 @@ public class MusicModel implements IMusicModel {
 
     NoteColumn n1 = new NoteColumn(name, octave);
     this.addNote(n1);
+
     for (NoteColumn n : this.notes) {
       if (n.toString().equals(note)) {
         n.addBeat(start, duration, volume, instrument);

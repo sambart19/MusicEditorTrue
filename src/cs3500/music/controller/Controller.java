@@ -1,5 +1,8 @@
 package cs3500.music.controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import cs3500.music.model.IMusicModel;
 import cs3500.music.view.CombinedView;
 import cs3500.music.view.GuiViewFrame;
@@ -8,7 +11,7 @@ import cs3500.music.view.MidiViewImpl;
 /**
  * Controller for the music model.
  */
-public class Controller implements IController{
+public class Controller implements IController, ActionListener{
 
   private IMusicModel model;
   private CombinedView view;
@@ -42,10 +45,38 @@ public class Controller implements IController{
     this.keys.addPressed(39, forward);
   }
 
+  public void actionPerformed(ActionEvent e) {
+    switch (e.getActionCommand()) {
+      case "Add Note":
+        try {
+          model.addBeat(view.guiNoteName(), Integer.parseInt(view.guiAccess("octave")),
+                  Integer.parseInt(view.guiAccess("location")),
+                  Integer.parseInt(view.guiAccess("duration")),
+                  Integer.parseInt(view.guiAccess("volume")),
+                  Integer.parseInt(view.guiAccess("instrument")));
+        } catch (NumberFormatException f) {
+          // Do nothing
+        }
+        break;
+
+      case "Remove Note":
+        try {
+          model.removeBeat(view.guiNoteName(), Integer.parseInt(view.guiAccess("octave")),
+                  Integer.parseInt(view.guiAccess("location")));
+        } catch (NumberFormatException f) {
+          // Do nothing
+        }
+        break;
+      default: //Does nothing
+    }
+    this.view.parse("rebuild");
+    view.resetFocus();
+  }
+
   @Override
   public void play() {
     this.view.view();
-    this.view.setListener(this.keys);
+    this.view.setListeners(this.keys, this);
     while (true) {
       /**
        * This print is needed due to a possible bug in java. When the print isn't included the

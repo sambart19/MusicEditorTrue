@@ -25,7 +25,7 @@ public class GuiViewFrameTest {
   public static void main(String[] args) {
     CompositionBuilder comp = new MusicModelComposition();
 
-    File f = new File("mystery-2.txt");
+    File f = new File("mary-little-lamb.txt");
     try {
       Readable file = new FileReader(f);
       MusicModel m = (MusicModel)MusicReader.parseFile(file, comp);
