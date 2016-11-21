@@ -48,24 +48,7 @@ public class MidiViewImpl implements IView {
     this.seq.setTempoInMPQ(tempo);
   }
 
-  /**
-   * A mock constructor.
-   * @param notes The notes.
-   * @param tempo The tempo.
-   * @param s The stringbuilder.
-   */
-  /*
-  public MidiViewImpl(List<NoteColumn> notes, int tempo, StringBuilder s) {
-    this.notes = notes;
-    this.tempo = tempo;
-    try {
-      this.synth = new MockSynth(s);
-      this.receiver = synth.getReceiver();
-      this.synth.open();
-    } catch (MidiUnavailableException e) {
-      e.printStackTrace();
-    }
-  }*/
+
 
   /**
    * Loads all the notes onto a track, which loads onto a sequence which is
