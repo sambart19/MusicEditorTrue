@@ -1,10 +1,8 @@
 package cs3500.music.controller;
 
 import cs3500.music.model.IMusicModel;
-import cs3500.music.model.MusicModel;
 import cs3500.music.view.CombinedView;
 import cs3500.music.view.GuiViewFrame;
-import cs3500.music.view.IView;
 import cs3500.music.view.MidiViewImpl;
 
 /**
@@ -13,9 +11,7 @@ import cs3500.music.view.MidiViewImpl;
 public class Controller implements IController{
 
   private IMusicModel model;
-
   private CombinedView view;
-
   private KeyHandler keys;
 
   /**
@@ -35,10 +31,10 @@ public class Controller implements IController{
    */
   private void buildKeys() {
     Runnable space = () -> this.view.togglePlay();
-    Runnable forward = () -> this.view.forward();
-    Runnable backward = () -> this.view.backward();
-    Runnable end = () -> this.view.toEnd();
-    Runnable start = () -> this.view.toStart();
+    Runnable forward = () -> this.view.parse("forward");
+    Runnable backward = () -> this.view.parse("backward");
+    Runnable end = () -> this.view.parse("to end");
+    Runnable start = () -> this.view.parse("to start");
     this.keys.addPressed(32, space);
     this.keys.addPressed(37, backward);
     this.keys.addPressed(36, start);
@@ -52,12 +48,12 @@ public class Controller implements IController{
     this.view.setListener(this.keys);
     while (true) {
       /**
-       * This print is needed due to a possible bug. When the print isn't included the
+       * This print is needed due to a possible bug in java. When the print isn't included the
        * if statement does not get evaluated.
        */
       System.out.print("");
      if (this.view.getIsPlaying()) {
-        this.view.refresh();
+        this.view.parse("refresh");
       }
     }
   }
