@@ -60,3 +60,35 @@ MockSynth
 
 MusicEditor
 - The main jar file that runs the program with two arguments, music file and view type.
+
+Controller
+- Takes in a view and a model, as well as creating its own keyhandler events. The only keystrokes
+handled right now are home/end to jump to the start/end of a composition, space to pause/play, and
+arrow keys to scroll through the gui portion. The Controller adds a keylistener as well as an
+action listener to the view.
+
+KeyHandler
+- A class that implements keylistener, binds actions to key events through the use of three maps.
+Provides methods for adding bindings to maps.
+
+CombinedView
+- A class that combines MidiViewImpl as well as GuiFrameView. It allows users to interact with
+keyboard or buttons and text fields. Users can add/remove notes as well as pause the composition
+or scroll through the gui.
+
+
+MidiViewImpl
+ - Changed the way it plays sound, instead of using sending messages to a MIDI reciever it now
+ uses a Sequence and a sequencer.
+ - Added method to pause playback/resume playback.
+ - Added method to retrieve current tick position. This is used to sync up other views.
+
+ GuiViewFrame
+ - Added methods to scroll through the view.
+ - Added methods to paint a red line based on tick position.
+ - Added method to set listeners.
+ - Added method to refresh its drawn components.
+
+ GuiPanel
+ - Changed the jframe layout.
+ - Added several labels, text fields, and buttons to correspond with user input.
