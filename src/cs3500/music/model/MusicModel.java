@@ -6,14 +6,18 @@ import java.util.List;
 
 import cs3500.music.NoteColumn;
 import cs3500.music.NoteName;
+import cs3500.music.provider.IMusicEditorModel;
+import cs3500.music.provider.Note;
+import cs3500.music.provider.Pitch;
 
 /**
  * A model designed to represent a song featuring only one instrument.
  */
-public class MusicModel implements IMusicModel {
+public class MusicModel implements IMusicModel, IMusicEditorModel<Note> {
 
   private List<NoteColumn> notes;
   private int tempo;
+  private ArrayList<Note> noter;
 
   /**
    * A basic constructor for MusicModel.
@@ -190,4 +194,84 @@ public class MusicModel implements IMusicModel {
     return result;
   }
 
+  @Override
+  public ArrayList<Note> getNotes() {
+    return noter;
+  }
+
+  @Override
+  public int length() {
+    int result = 0;
+    for (NoteColumn a : this.notes) {
+      if (!a.getBeats().keySet().isEmpty()) {
+        result = Math.max(Collections.max(a.getBeats().keySet()), result);
+      }
+    }
+    return result;
+  }
+
+  @Override
+  public String getState(){
+    return "";
+  }
+
+  @Override
+  public ArrayList<Note> range() {
+    ArrayList<Note> result = new ArrayList<>();
+    for (NoteColumn n: notes) {
+      result.add(new Note(Pitch.findPitch(n.getName().ordinal()), n.getOctave()));
+    }
+    return result;
+  }
+
+  @Override
+  public Note highestNote() {
+    NoteColumn n = this.notes.get(this.notes.size() - 1);
+    return new Note(Pitch.findPitch(n.getName().ordinal()), n.getOctave());
+  }
+
+  @Override
+  public Note lowestNote() {
+    NoteColumn n = this.notes.get(0);
+    return new Note(Pitch.findPitch(n.getName().ordinal()), n.getOctave());
+  }
+
+  @Override
+  public List<Note> currentNotes(int pos) {
+    return new ArrayList<>();
+  }
+
+  @Override
+  public void combineSim(ArrayList<Note> list) {
+  //Method exists to satisfy implementation
+  }
+
+  @Override
+  public void combineCons(ArrayList<Note> list) {
+  //Method exists to satisfy implementation
+  }
+
+  @Override
+  public void add(Note note) {
+    //Method exists to satisfy implementation
+  }
+
+  @Override
+  public void remove(Note note) {
+    //Method exists to satisfy implementation
+  }
+
+  public void update() {
+    ArrayList<Note> result = new ArrayList<>();
+    for (NoteColumn n: this.notes) {
+      for (Integer loc: n.getBeats().keySet()) {
+        if (n.getBeats().get(loc).getHead()) {
+          result.add(new Note(Pitch.findPitch(n.getName().ordinal()), n.getOctave(),
+                  n.getBeats().get(loc).getEnd() - loc, loc, n.getBeats().get(loc).getVolume(),
+                  n.getBeats().get(loc).getInstrument()));
+        }
+      }
+    }
+    this.noter = result;
+  }
 }
